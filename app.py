@@ -77,11 +77,11 @@ st.markdown("""
         margin-top: 1.5rem;
     }
     
-    /* Metrics - Lightroom style */
+    /* Metrics - Lightroom style with rounded edges */
     .stMetric {
         background: linear-gradient(135deg, #2C2C2C 0%, #383838 100%);
         padding: 1.25rem;
-        border-radius: 4px;
+        border-radius: 8px;
         border-left: 3px solid #1473E6;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
@@ -105,41 +105,49 @@ st.markdown("""
         font-size: 0.875rem;
     }
     
-    /* Buttons - Adobe style */
+    /* Buttons - Adobe style with smooth transitions */
     .stButton button {
-        background: linear-gradient(180deg, #1473E6 0%, #0D66D0 100%);
+        background: linear-gradient(135deg, #1473E6 0%, #0D66D0 100%);
         color: #FFFFFF;
         border: none;
-        border-radius: 4px;
-        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        padding: 0.625rem 1.75rem;
         font-weight: 600;
         font-size: 0.875rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        transition: all 0.2s;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(20, 115, 230, 0.3);
     }
     
     .stButton button:hover {
-        background: linear-gradient(180deg, #0D66D0 0%, #095ABA 100%);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #0D66D0 0%, #095ABA 100%);
+        box-shadow: 0 4px 12px rgba(20, 115, 230, 0.5);
+        transform: translateY(-2px);
     }
     
-    /* Alerts - Lightroom style */
+    .stButton button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(20, 115, 230, 0.4);
+    }
+    
+    /* Alerts - Lightroom style with rounded corners */
     .stAlert {
         background-color: #2C2C2C;
-        border-radius: 4px;
+        border-radius: 8px;
         border-left: 4px solid #1473E6;
         padding: 1rem;
         color: #E8E8E8;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     
     /* Info boxes */
     div[data-baseweb="notification"] {
-        background-color: #2C2C2C;
+        background: linear-gradient(135deg, #2C2C2C 0%, #323232 100%);
         border-left: 4px solid #1473E6;
+        border-radius: 8px;
         color: #E8E8E8;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     
     /* Sidebar */
@@ -162,36 +170,53 @@ st.markdown("""
         color: #1473E6 !important;
     }
     
-    /* Expander */
+    /* Expander - Smooth rounded design */
     .streamlit-expanderHeader {
-        background-color: #2C2C2C;
+        background: linear-gradient(135deg, #2C2C2C 0%, #323232 100%);
         color: #E8E8E8;
-        border-radius: 4px;
+        border-radius: 8px;
         font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
     
     .streamlit-expanderHeader:hover {
-        background-color: #383838;
+        background: linear-gradient(135deg, #383838 0%, #3D3D3D 100%);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     
-    /* Code blocks */
+    .streamlit-expanderContent {
+        background: #242424;
+        border-radius: 0 0 8px 8px;
+        padding: 1rem;
+    }
+    
+    /* Code blocks - Rounded with subtle glow */
     .stCodeBlock {
-        background-color: #1A1A1A;
+        background: linear-gradient(135deg, #1A1A1A 0%, #1E1E1E 100%);
         border: 1px solid #404040;
-        border-radius: 4px;
+        border-radius: 8px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
     }
     
     code {
         color: #1473E6;
         background-color: #1A1A1A;
-        padding: 0.2rem 0.4rem;
-        border-radius: 3px;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
         font-family: 'Consolas', 'Monaco', monospace;
     }
     
-    /* Progress bars */
+    /* Progress bars - Smooth and rounded */
     .stProgress > div > div {
-        background-color: #1473E6;
+        background: linear-gradient(90deg, #1473E6 0%, #0D66D0 100%);
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(20, 115, 230, 0.3);
+    }
+    
+    .stProgress > div {
+        background-color: #1A1A1A;
+        border-radius: 10px;
     }
     
     /* Dataframes */
@@ -216,61 +241,64 @@ st.markdown("""
         border-bottom: 3px solid #1473E6;
     }
     
-    /* Priority badges */
+    /* Priority badges - Rounded with glow */
     .priority-critical {
         background: linear-gradient(135deg, #D7373F 0%, #B82E35 100%);
         color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 3px;
+        padding: 0.375rem 1rem;
+        border-radius: 12px;
         font-weight: 700;
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         display: inline-block;
         margin-bottom: 0.5rem;
+        box-shadow: 0 2px 8px rgba(215, 55, 63, 0.4);
     }
     
     .priority-high {
         background: linear-gradient(135deg, #E68619 0%, #CC7614 100%);
         color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 3px;
+        padding: 0.375rem 1rem;
+        border-radius: 12px;
         font-weight: 700;
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         display: inline-block;
         margin-bottom: 0.5rem;
+        box-shadow: 0 2px 8px rgba(230, 134, 25, 0.4);
     }
     
     .priority-medium {
         background: linear-gradient(135deg, #1473E6 0%, #0D66D0 100%);
         color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 3px;
+        padding: 0.375rem 1rem;
+        border-radius: 12px;
         font-weight: 700;
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         display: inline-block;
         margin-bottom: 0.5rem;
+        box-shadow: 0 2px 8px rgba(20, 115, 230, 0.4);
     }
     
-    /* Recommendation cards */
+    /* Recommendation cards - Smooth, rounded, elevated */
     .recommendation-card {
         background: linear-gradient(135deg, #2C2C2C 0%, #323232 100%);
         border: 1px solid #404040;
-        border-radius: 6px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        transition: all 0.2s;
+        border-radius: 12px;
+        padding: 1.75rem;
+        margin: 1.25rem 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .recommendation-card:hover {
         border-color: #1473E6;
-        box-shadow: 0 6px 16px rgba(20,115,230,0.2);
-        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(20,115,230,0.3), 0 0 0 1px rgba(20,115,230,0.2);
+        transform: translateY(-3px);
     }
     
     /* ML badge */
@@ -291,9 +319,59 @@ st.markdown("""
         margin: 2rem 0;
     }
     
-    /* Select boxes and inputs */
-    .stSelectbox, .stNumberInput, .stSlider {
-        background-color: #2C2C2C;
+    /* Select boxes and inputs - Rounded modern design */
+    .stSelectbox > div > div, 
+    .stNumberInput > div > div,
+    .stSlider > div > div {
+        background: linear-gradient(135deg, #2C2C2C 0%, #2A2A2A 100%);
+        border-radius: 8px;
+        border: 1px solid #404040;
+        transition: all 0.3s ease;
+    }
+    
+    .stSelectbox > div > div:hover,
+    .stNumberInput > div > div:hover {
+        border-color: #1473E6;
+        box-shadow: 0 0 0 2px rgba(20, 115, 230, 0.2);
+    }
+    
+    /* Slider styling - Blended design */
+    .stSlider {
+        padding: 1rem 0;
+    }
+    
+    .stSlider > div > div > div {
+        background: linear-gradient(135deg, #2C2C2C 0%, #2A2A2A 100%);
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    
+    /* Slider track */
+    .stSlider > div > div > div > div {
+        background: #1A1A1A !important;
+        border-radius: 10px;
+        height: 6px;
+    }
+    
+    /* Slider filled track */
+    .stSlider > div > div > div > div > div {
+        background: linear-gradient(90deg, #1473E6 0%, #0D66D0 100%) !important;
+        border-radius: 10px;
+    }
+    
+    /* Slider thumb */
+    .stSlider > div > div > div > div > div > div {
+        background: linear-gradient(135deg, #1473E6 0%, #0D66D0 100%) !important;
+        border: 2px solid #FFFFFF !important;
+        box-shadow: 0 2px 8px rgba(20, 115, 230, 0.4) !important;
+        width: 18px !important;
+        height: 18px !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stSlider > div > div > div > div > div > div:hover {
+        transform: scale(1.2) !important;
+        box-shadow: 0 3px 12px rgba(20, 115, 230, 0.6) !important;
     }
     
     /* Text color for general content */
@@ -574,14 +652,11 @@ def page_catalog_overview():
 def page_recommendations():
     """Page 2: Smart Collection Recommendations."""
     st.title("Smart Collection Recommendations")
-    st.caption("ML-powered suggestions based on catalog analysis")
+    st.caption("Personalized suggestions based on your catalog patterns")
     
     catalog_df = load_or_generate_data()
     analysis_results, processed_df = run_analysis(catalog_df)
     recommendations = generate_recommendations(processed_df, analysis_results)
-    
-    # ML Models info bar
-    st.info("**Machine Learning Models:** RandomForest • Gradient Boosting • K-Means • DBSCAN • Isolation Forest • PCA • Cosine Similarity")
     
     # Filter controls
     col1, col2, col3 = st.columns([2, 1, 1])
@@ -621,7 +696,6 @@ def page_recommendations():
         <div class="recommendation-card">
             {priority_badge}
             <h3 style="margin-top: 0.5rem;">{i}. {rec.collection_name}</h3>
-            <span class="ml-badge">ML: {rec.ml_technique}</span>
         </div>
         """, unsafe_allow_html=True)
         
@@ -629,15 +703,13 @@ def page_recommendations():
         
         with col1:
             st.markdown(f"**Category:** {rec.category}")
-            st.markdown(f"**Rule:** `{rec.collection_rule}`")
             st.markdown(f"**Impact:** {rec.impact_description}")
             st.markdown(f"**Why Recommended:** {rec.why_recommended}")
             st.markdown(f"**Expected Benefit:** {rec.expected_benefit}")
         
         with col2:
             st.metric("PHOTOS AFFECTED", f"{rec.photos_affected:,}")
-            st.metric("PRIORITY SCORE", f"{rec.priority_score:.0f}/100")
-            st.metric("ML CONFIDENCE", f"{rec.ml_confidence:.0%}")
+            st.metric("PRIORITY", f"{rec.priority_score:.0f}/100")
             
             # Percentage bar
             pct = (rec.photos_affected / len(catalog_df)) * 100
@@ -645,41 +717,24 @@ def page_recommendations():
             st.caption(f"{pct:.1f}% of catalog")
         
         # Setup instructions
-        with st.expander("SETUP INSTRUCTIONS"):
-            st.markdown(f"**Implementation Guide:**")
-            st.markdown(rec.setup_instructions)
+        with st.expander("IMPLEMENTATION GUIDE"):
+            st.markdown(f"**Lightroom Smart Collection Rule:**")
             st.code(rec.lightroom_rule_syntax, language="text")
+            st.caption(f"Copy this rule and paste in: Library > Smart Collection > Add Rule")
             
-            if st.button(f"COPY RULE SYNTAX", key=f"copy_{rec.recommendation_id}"):
-                st.success("Rule syntax ready to paste in Lightroom")
+            if st.button(f"MARK AS IMPLEMENTED", key=f"done_{rec.recommendation_id}"):
+                st.success("Great! This collection will help organize your catalog.")
         
         st.markdown("<hr>", unsafe_allow_html=True)
-    
-    # ML Performance Section
-    st.subheader("Machine Learning Performance")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        avg_confidence = np.mean([r.ml_confidence for r in recommendations])
-        st.metric("AVG MODEL CONFIDENCE", f"{avg_confidence:.1%}")
-    
-    with col2:
-        techniques_used = len(set([r.ml_technique for r in recommendations]))
-        st.metric("ML TECHNIQUES USED", techniques_used)
-    
-    with col3:
-        high_conf_recs = len([r for r in recommendations if r.ml_confidence > 0.7])
-        st.metric("HIGH CONFIDENCE RECS", high_conf_recs)
 
 
 def main():
     """Main application logic."""
     
     # Sidebar
-    st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Adobe_Photoshop_Lightroom_Classic_CC_icon.svg/1051px-Adobe_Photoshop_Lightroom_Classic_CC_icon.svg.png", width=60)
+    st.sidebar.image("Lightroom.png", width=60)
     st.sidebar.title("Smart Collections Intelligence")
-    st.sidebar.caption("Powered by Machine Learning")
+    st.sidebar.caption("Catalog Analysis & Recommendations")
     st.sidebar.markdown("<hr>", unsafe_allow_html=True)
     
     page = st.sidebar.radio(
@@ -692,19 +747,8 @@ def main():
     )
     
     st.sidebar.markdown("<hr>", unsafe_allow_html=True)
-    st.sidebar.markdown("### ML MODELS")
-    st.sidebar.caption("""
-    • RandomForest Classifier  
-    • Gradient Boosting Regressor  
-    • K-Means Clustering  
-    • DBSCAN Clustering  
-    • Isolation Forest  
-    • PCA + Cosine Similarity  
-    """)
-    
-    st.sidebar.markdown("<hr>", unsafe_allow_html=True)
-    st.sidebar.caption("**About This System**")
-    st.sidebar.caption("ML-powered catalog analysis using ensemble learning techniques to discover organizational patterns.")
+    st.sidebar.caption("**About**")
+    st.sidebar.caption("Analyzes your Lightroom catalog to identify organizational patterns and suggest Smart Collections that improve workflow efficiency.")
     
     # Route to pages
     if page == "Catalog Overview":
