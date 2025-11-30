@@ -48,10 +48,6 @@ st.markdown("""
         background-color: #242424;
         color: #E8E8E8;
     }
-            
-    #GithubIcon {
-        visibility: hidden;
-    }
     
     /* Headers */
     h1 {
@@ -681,7 +677,7 @@ def main():
     """Main application logic."""
     
     # Sidebar
-    st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Adobe_Photoshop_Lightroom_Classic_CC_icon.svg/1200px-Adobe_Photoshop_Lightroom_Classic_CC_icon.svg.png", width=60)
+    st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Adobe_Photoshop_Lightroom_Classic_CC_icon.svg/1051px-Adobe_Photoshop_Lightroom_Classic_CC_icon.svg.png", width=60)
     st.sidebar.title("Smart Collections Intelligence")
     st.sidebar.caption("Powered by Machine Learning")
     st.sidebar.markdown("<hr>", unsafe_allow_html=True)
@@ -708,7 +704,7 @@ def main():
     
     st.sidebar.markdown("<hr>", unsafe_allow_html=True)
     st.sidebar.caption("**About This System**")
-    st.sidebar.caption("Fully ML-driven catalog analysis with zero hard-coded rules. All patterns discovered by trained models.")
+    st.sidebar.caption("ML-powered catalog analysis using ensemble learning techniques to discover organizational patterns.")
     
     # Route to pages
     if page == "Catalog Overview":

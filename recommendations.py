@@ -1,13 +1,9 @@
 """
 Fully ML-Driven Smart Collection Recommendation Engine
 
-NO HARD-CODED RULES - Everything learned from data:
-- Gradient Boosting for recommendation scoring
-- Ensemble models for pattern significance detection
-- Bayesian optimization for hyperparameters
-- Reinforcement learning-style feedback incorporation
+Uses ensemble machine learning to discover catalog patterns and generate
+actionable Smart Collection recommendations for Lightroom Classic.
 """
-
 
 import pandas as pd
 import numpy as np
@@ -82,9 +78,9 @@ class MLRecommendationEngine:
         self._prepare_data()
         
         # Train ML models
-        print("🤖 Training ML models (no hard-coded rules)...")
+        print("🤖 Training ML models...")
         self._train_ml_models()
-        print("✓ ML models trained and ready\n")
+        print("✓ ML models ready\n")
         
     def _prepare_data(self):
         """Prepare data with feature engineering."""
@@ -634,8 +630,8 @@ class MLRecommendationEngine:
         return float(np.clip(priority, 0, 100))
     
     def generate_all_recommendations(self) -> List[SmartCollectionRecommendation]:
-        """Generate recommendations using pure ML - no hard-coded rules."""
-        print("🚀 Generating recommendations with ML models...\n")
+        """Generate recommendations using ML models."""
+        print("\n🚀 Generating recommendations...\n")
         
         # Generate from each ML discovery
         self._generate_from_exif_clusters()
@@ -652,14 +648,22 @@ class MLRecommendationEngine:
         for i, rec in enumerate(self.recommendations, 1):
             rec.recommendation_id = i
         
-        print(f"\n✅ Generated {len(self.recommendations)} ML-driven recommendations")
-        print(f"   All decisions made by trained models, zero hard-coded rules\n")
+        print(f"\n✅ Generated {len(self.recommendations)} recommendations")
         
         return self.recommendations
     
     def _generate_from_exif_clusters(self):
-        """Generate recommendations from EXIF clusters."""
+        """Generate recommendations from EXIF clusters with Lightroom-compatible rules."""
         for cluster in self.exif_clusters:
+            # Generate actual Lightroom rule based on cluster characteristics
+            focal_min = int(cluster['avg_focal'] * 0.8)
+            focal_max = int(cluster['avg_focal'] * 1.2)
+            aperture_max = cluster['avg_aperture'] * 1.3
+            
+            lightroom_rule = f"Focal Length is between {focal_min}mm and {focal_max}mm"
+            if cluster['avg_aperture'] < 4.0:
+                lightroom_rule += f" AND Aperture <= f/{aperture_max:.1f}"
+            
             priority = self._calculate_ml_priority(
                 photos_affected=cluster['size'],
                 pattern_strength=cluster['significance'],
@@ -673,15 +677,15 @@ class MLRecommendationEngine:
             rec = SmartCollectionRecommendation(
                 recommendation_id=self.recommendation_id,
                 collection_name=f"ML-Discovered: {cluster['description']}",
-                collection_rule=f"EXIF cluster {cluster['cluster_id']}",
+                collection_rule=lightroom_rule,
                 category="ML: EXIF Patterns",
                 priority_score=priority,
                 photos_affected=cluster['size'],
-                impact_description=f"K-Means clustering found {cluster['size']:,} photos ({cluster['size_pct']*100:.1f}%) with distinct style: {cluster['description']}",
-                why_recommended=f"Unsupervised learning detected pattern (focal: {cluster['avg_focal']:.0f}mm, f/{cluster['avg_aperture']:.1f}, ISO {cluster['avg_iso']:.0f}). Significance score: {cluster['significance']:.2f}",
+                impact_description=f"K-Means clustering found {cluster['size']:,} photos ({cluster['size_pct']*100:.1f}%) with this shooting style",
+                why_recommended=f"Unsupervised learning detected pattern: focal length around {cluster['avg_focal']:.0f}mm, aperture f/{cluster['avg_aperture']:.1f}, ISO {cluster['avg_iso']:.0f}",
                 expected_benefit="Auto-organize by discovered shooting style without manual tagging",
-                setup_instructions=f"Create Smart Collection for EXIF cluster {cluster['cluster_id']}",
-                lightroom_rule_syntax=f"exifCluster is {cluster['cluster_id']}",
+                setup_instructions=f"Library > Smart Collection > {lightroom_rule}",
+                lightroom_rule_syntax=lightroom_rule,
                 ml_confidence=confidence,
                 ml_technique="K-Means Clustering + Gradient Boosting"
             )
@@ -689,9 +693,17 @@ class MLRecommendationEngine:
             self.recommendation_id += 1
     
     def _generate_from_org_clusters(self):
-        """Generate from organization clusters."""
+        """Generate from organization clusters with Lightroom-compatible rules."""
         for cluster in self.org_clusters:
             if cluster['organization_level'] == 'low':
+                # Generate rule based on low organization characteristics
+                if cluster['avg_keywords'] < 1:
+                    lightroom_rule = "Keywords is empty"
+                    if cluster['avg_rating'] < 1:
+                        lightroom_rule += " AND Rating is 0"
+                else:
+                    lightroom_rule = "Keywords count < 3 AND Rating is 0"
+                
                 priority = self._calculate_ml_priority(
                     photos_affected=cluster['size'],
                     pattern_strength=cluster['significance'],
@@ -704,16 +716,16 @@ class MLRecommendationEngine:
                 
                 rec = SmartCollectionRecommendation(
                     recommendation_id=self.recommendation_id,
-                    collection_name=f"ML-Discovered: Disorganized Group #{cluster['cluster_id']+1}",
-                    collection_rule=f"Organization cluster {cluster['cluster_id']}",
+                    collection_name=f"ML-Discovered: Low Organization Group",
+                    collection_rule=lightroom_rule,
                     category="ML: Organization Patterns",
                     priority_score=priority,
                     photos_affected=cluster['size'],
-                    impact_description=f"DBSCAN clustering found {cluster['size']:,} photos with low organization (avg {cluster['avg_keywords']:.1f} keywords, {cluster['avg_collections']:.1f} collections)",
-                    why_recommended=f"Density-based clustering detected disorganized pattern. Significance: {cluster['significance']:.2f}",
-                    expected_benefit="Batch organize similar low-organization photos together",
-                    setup_instructions=f"Create Smart Collection for org cluster {cluster['cluster_id']}",
-                    lightroom_rule_syntax=f"orgCluster is {cluster['cluster_id']}",
+                    impact_description=f"DBSCAN clustering found {cluster['size']:,} photos with minimal organization (avg {cluster['avg_keywords']:.1f} keywords)",
+                    why_recommended=f"Density-based clustering detected disorganized pattern. These photos lack keywords and ratings.",
+                    expected_benefit="Batch organize similar low-organization photos together for efficient workflow",
+                    setup_instructions=f"Library > Smart Collection > {lightroom_rule}",
+                    lightroom_rule_syntax=lightroom_rule,
                     ml_confidence=confidence,
                     ml_technique="DBSCAN + Significance Model"
                 )
@@ -721,8 +733,41 @@ class MLRecommendationEngine:
                 self.recommendation_id += 1
     
     def _generate_from_anomalies(self):
-        """Generate from anomalies."""
+        """Generate from anomalies with actual Lightroom-compatible rules."""
         if self.anomaly_significance > 0.5 and self.anomaly_count > 0:
+            # Analyze what makes these photos anomalous
+            anomaly_photos = self.df[self.df['is_anomaly']]
+            
+            # Determine characteristics of anomalies
+            avg_iso = anomaly_photos['iso'].mean()
+            avg_focal = anomaly_photos['focal_length'].mean()
+            unusual_iso = avg_iso > self.df['iso'].quantile(0.90) or avg_iso < self.df['iso'].quantile(0.10)
+            unusual_focal = avg_focal > self.df['focal_length'].quantile(0.90) or avg_focal < self.df['focal_length'].quantile(0.10)
+            
+            # Generate Lightroom-compatible rule based on anomaly characteristics
+            if unusual_iso and unusual_focal:
+                # Anomalies are unusual in both ISO and focal length
+                iso_threshold = int(self.df['iso'].quantile(0.90))
+                focal_threshold = int(self.df['focal_length'].quantile(0.90))
+                lightroom_rule = f"ISO > {iso_threshold} OR Focal Length > {focal_threshold}"
+                collection_name = "ML-Discovered: Unusual Settings (High ISO or Extreme Focal Length)"
+            elif unusual_iso:
+                # Anomalies are primarily unusual ISO
+                iso_low = int(self.df['iso'].quantile(0.10))
+                iso_high = int(self.df['iso'].quantile(0.90))
+                lightroom_rule = f"ISO < {iso_low} OR ISO > {iso_high}"
+                collection_name = "ML-Discovered: Unusual ISO Settings"
+            elif unusual_focal:
+                # Anomalies are primarily unusual focal length
+                focal_low = int(self.df['focal_length'].quantile(0.10))
+                focal_high = int(self.df['focal_length'].quantile(0.90))
+                lightroom_rule = f"Focal Length < {focal_low}mm OR Focal Length > {focal_high}mm"
+                collection_name = "ML-Discovered: Unusual Focal Lengths"
+            else:
+                # General anomalies - use keyword absence as proxy
+                lightroom_rule = "Keywords is empty AND Rating is 0 AND File Size > 40MB"
+                collection_name = "ML-Discovered: Large Unorganized Files"
+            
             priority = self._calculate_ml_priority(
                 photos_affected=self.anomaly_count,
                 pattern_strength=self.anomaly_significance,
@@ -735,16 +780,16 @@ class MLRecommendationEngine:
             
             rec = SmartCollectionRecommendation(
                 recommendation_id=self.recommendation_id,
-                collection_name="ML-Discovered: Anomalous Photos",
-                collection_rule="Flagged by Isolation Forest",
+                collection_name=collection_name,
+                collection_rule=lightroom_rule,
                 category="ML: Anomaly Detection",
                 priority_score=priority,
                 photos_affected=self.anomaly_count,
-                impact_description=f"Isolation Forest detected {self.anomaly_count:,} photos that deviate from your typical patterns",
-                why_recommended=f"Ensemble anomaly detection found outliers. These could be mistakes or hidden gems. Significance: {self.anomaly_significance:.2f}",
-                expected_benefit="Review unusual photos - delete errors or discover unexpected keepers",
-                setup_instructions="Create Smart Collection for anomaly-flagged photos",
-                lightroom_rule_syntax="isAnomaly is true",
+                impact_description=f"Isolation Forest detected {self.anomaly_count:,} photos with unusual characteristics",
+                why_recommended=f"ML anomaly detection found outliers based on EXIF patterns. These could be mistakes, test shots, or experimental work.",
+                expected_benefit="Review unusual photos - delete errors or discover unexpected creative shots",
+                setup_instructions=f"Library > Smart Collection > Add Rule: {lightroom_rule}",
+                lightroom_rule_syntax=lightroom_rule,
                 ml_confidence=confidence,
                 ml_technique="Isolation Forest"
             )
@@ -752,8 +797,26 @@ class MLRecommendationEngine:
             self.recommendation_id += 1
     
     def _generate_from_similarities(self):
-        """Generate from similarity analysis."""
+        """Generate from similarity analysis with Lightroom-compatible rules."""
         if self.similarity_significance > 0.5 and self.similar_count > 0:
+            # Find common characteristics of similar photos
+            similar_photos = self.df[
+                (self.df['similarity_to_best'] > np.percentile(self.df['similarity_to_best'], 90)) &
+                (self.df['star_rating'] == 0)
+            ]
+            
+            # Determine what makes them similar (focal length, aperture patterns)
+            avg_focal = similar_photos['focal_length'].mean()
+            avg_aperture = similar_photos['aperture'].mean()
+            
+            # Create Lightroom rule based on characteristics
+            focal_range = (int(avg_focal * 0.85), int(avg_focal * 1.15))
+            
+            if avg_aperture < 4.0:
+                lightroom_rule = f"Focal Length is between {focal_range[0]}mm and {focal_range[1]}mm AND Aperture <= f/{avg_aperture * 1.2:.1f} AND Rating is 0"
+            else:
+                lightroom_rule = f"Focal Length is between {focal_range[0]}mm and {focal_range[1]}mm AND Rating is 0"
+            
             priority = self._calculate_ml_priority(
                 photos_affected=self.similar_count,
                 pattern_strength=self.similarity_significance,
@@ -767,15 +830,15 @@ class MLRecommendationEngine:
             rec = SmartCollectionRecommendation(
                 recommendation_id=self.recommendation_id,
                 collection_name="ML-Discovered: Similar to Your Best Work",
-                collection_rule="High cosine similarity to 4-5 star photos",
+                collection_rule=lightroom_rule,
                 category="ML: Similarity Analysis",
                 priority_score=priority,
                 photos_affected=self.similar_count,
-                impact_description=f"PCA + cosine similarity found {self.similar_count:,} unrated photos matching your best work patterns",
-                why_recommended=f"Dimensionality reduction + similarity matching discovered potential keepers. Significance: {self.similarity_significance:.2f}",
-                expected_benefit="Fast-track rating - these likely match your quality standards",
-                setup_instructions="Create Smart Collection for high-similarity unrated photos",
-                lightroom_rule_syntax="similarityScore > autoThreshold AND rating is 0",
+                impact_description=f"PCA + cosine similarity found {self.similar_count:,} unrated photos with EXIF patterns matching your 4-5 star photos",
+                why_recommended=f"Dimensionality reduction found these photos have similar shooting settings to your best work (focal: ~{avg_focal:.0f}mm, aperture: ~f/{avg_aperture:.1f})",
+                expected_benefit="Fast-track rating - these likely match your quality standards based on shooting style",
+                setup_instructions=f"Library > Smart Collection > {lightroom_rule}",
+                lightroom_rule_syntax=lightroom_rule,
                 ml_confidence=confidence,
                 ml_technique="PCA + Cosine Similarity"
             )
@@ -877,8 +940,8 @@ class MLRecommendationEngine:
 def main():
     """Generate ML-driven recommendations."""
     print("=" * 70)
-    print("FULLY ML-DRIVEN SMART COLLECTION RECOMMENDATION ENGINE")
-    print("Zero Hard-Coded Rules - All Decisions Made by Trained Models")
+    print("SMART COLLECTION RECOMMENDATION ENGINE")
+    print("Machine Learning-Powered Catalog Analysis")
     print("=" * 70)
     
     # Load catalog
@@ -926,24 +989,17 @@ def main():
     print("\n" + "=" * 70)
     print("ML TECHNIQUES USED")
     print("=" * 70)
-    print("\n✅ Models Trained:")
+    print("\n✅ Models:")
     print("  • RandomForestClassifier (user profile)")
-    print("  • GradientBoostingRegressor (2x: significance + priority)")
+    print("  • GradientBoostingRegressor (significance + priority)")
     print("  • K-Means (EXIF clustering)")
     print("  • DBSCAN (organization clustering)")
     print("  • Isolation Forest (anomaly detection)")
     print("  • PCA + Cosine Similarity (similar photos)")
-    print("  • Statistical Outlier Detection (temporal/equipment patterns)")
-    
-    print("\n✅ Zero Hard-Coded Rules:")
-    print("  • Cluster count: Elbow method")
-    print("  • DBSCAN eps: Knee point detection")
-    print("  • Significance threshold: Model prediction")
-    print("  • Priority scores: Gradient boosting")
-    print("  • Pattern thresholds: Statistical outliers")
+    print("  • Statistical Outlier Detection (patterns)")
     
     print("\n" + "=" * 70)
-    print("✓ ML-driven recommendation generation complete!")
+    print("✓ Recommendation generation complete")
     print("=" * 70)
 
 
