@@ -48,6 +48,10 @@ st.markdown("""
         background-color: #242424;
         color: #E8E8E8;
     }
+            
+    #GithubIcon {
+        visibility: hidden;
+    }
     
     /* Headers */
     h1 {
