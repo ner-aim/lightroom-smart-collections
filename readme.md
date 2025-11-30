@@ -148,7 +148,7 @@ streamlit run app.py
 
 ### File Structure
 ```
-smart-collections-intelligence/
+lightroom-smart-collections/
 ├── app.py                    # Streamlit dashboard
 ├── generate_data.py          # Synthetic data generator
 ├── analysis.py               # Pattern analysis engine
