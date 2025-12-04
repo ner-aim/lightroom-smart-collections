@@ -2,7 +2,7 @@
 
 **ML-Powered Catalog Analysis & Recommendation Engine**
 
-> A proof-of-concept demonstrating how machine learning can transform Lightroom Classic's organizational workflow by automatically discovering patterns and suggesting Smart Collections—eliminating manual catalog management overhead for professional photographers.
+> A proof-of-concept demonstrating how machine learning can transform Lightroom Classic's organizational workflow by automatically discovering patterns and suggesting Smart Collections, eliminating manual catalog management overhead for professional photographers.
 
 ---
 
