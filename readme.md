@@ -26,7 +26,6 @@ An **ML-driven recommendation engine** that:
 3. Generates personalized Smart Collection recommendations with **priority scoring**
 4. Visualizes catalog health through **interactive dashboard** (Adobe Lightroom aesthetic)
 
-**Key Innovation:** Zero hard-coded rules—all recommendations discovered by trained ML models.
 
 ---
 
@@ -208,7 +207,7 @@ lightroom-smart-collections/
 
 ## 🧪 ML Model Performance
 
-**Models Trained (Zero Hard-Coded Rules):**
+**Models Trained:**
 - ✅ RandomForestClassifier - User profile classification
 - ✅ GradientBoostingRegressor (2x) - Pattern significance + priority scoring
 - ✅ K-Means - EXIF clustering (optimal k via elbow method)
